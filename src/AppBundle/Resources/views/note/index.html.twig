@@ -1,7 +1,7 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <h1>Список Заметок <span style="color: #568a1b">{{ app.session.get('welcomeMessage') }} {{ app.user.name }}</span></h1>
+    <h1>Список Заметок <span style="color: #568a1b">{{ app.session.get('welcomeMessage') }} {{ app.user.username }}</span></h1>
     {% for note in notes %}
         <div class="block-note">
             <p>{{ note.content }}</p>

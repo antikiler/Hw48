@@ -1,26 +1,32 @@
 security:
-    providers:
-        main:
-            entity: { class: AppBundle:User, property: email }
-
     encoders:
-        AppBundle\Entity\User: bcrypt
+        FOS\UserBundle\Model\UserInterface: bcrypt
+
+    role_hierarchy:
+        ROLE_USER:        IS_AUTHENTICATED_ANONYMOUSLY
+        ROLE_ADMIN:       ROLE_USER
+        ROLE_SUPER_ADMIN: ROLE_ADMIN
+
+    providers:
+        fos_userbundle:
+            id: fos_user.user_provider.username
+
     firewalls:
         main:
-            pattern: /.* #указываем встроенному фаерволу Symfony маску по которой защищается наш сайт
+            pattern: ^/
             form_login:
-                check_path: /login #указываем ссылку на страницу, на которой будет находиться форма авторизации
-                login_path: /login #указываем путь по которому будет проходить проверка введенных данных и авторизация его в системе
-                default_target_path: / #указываем на страницу которую хотим перейти после авторизации по умолчанию
-            logout:
-                path:   /logout #указываем путь по которому пользователь может выйти из системы.
-                target: /login
-            security: true
-            anonymous: true #разрешаем неавторизованным пользователям находиться на нашем сайте и гулять по разрешенным ссылкам
+                provider: fos_userbundle
+                csrf_token_generator: security.csrf.token_manager
+                # if you are using Symfony < 2.8, use the following config instead:
+                # csrf_provider: form.csrf_provider
+
+            logout:       true
+            anonymous:    true
+
     access_control:
-          - { path: /user/new, role: IS_AUTHENTICATED_ANONYMOUSLY }
-          - { path: /user/.*, role: ROLE_ADMIN }
-          - { path: /profile, role: ROLE_USER }
-          - { path: /login/*, role: IS_AUTHENTICATED_ANONYMOUSLY }
-          - { path: /login_check/*, role: IS_AUTHENTICATED_ANONYMOUSLY }
-          - { path: /note/*, role: ROLE_USER }
+
+        - { path: ^/login$, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/register, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/resetting, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/admin/, role: ROLE_ADMIN }
+        - { path: ^/note/*, role: ROLE_USER }

@@ -59,8 +59,8 @@
                     {% if(app.user) %}
                     <li><a href="{{ path('logout') }}">Выход</a></li>
                     {% else %}
-                    <li><a href="{{ path('loginPage') }}">Вход</a></li>
-                    <li><a href="{{ path('userNew') }}">Регистрация</a></li>
+                    <li><a href="{{ path('fos_user_security_login') }}">Вход</a></li>
+                    <li><a href="{{ path('fos_user_registration_register') }}">Регистрация</a></li>
                     {% endif %}
                 </ul>
             </div>

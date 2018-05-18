@@ -23,23 +23,5 @@ class HomeController extends Controller
             'user' => $this->getUser()
         ));
     }
-    /**
-     * @Route("/login",name="loginPage")
-     * @param Request $request
-     * @return \Symfony\Component\HttpFoundation\Response
-     */
-    public function loginAction(Request $request)
-    {
-        if ($this->getUser()){
-            return $this->redirectToRoute("noteList");
-        }
-        $authUtils = $this->get('security.authentication_utils');
-        $error = $authUtils->getLastAuthenticationError();
-        $lastUsername = $authUtils->getLastUsername();
-        return $this->render('@App/home/login.html.twig', array(
-            'last_username' => $lastUsername,
-            'error'         => $error,
-        ));
-    }
 
 }
